@@ -1,0 +1,105 @@
+class Employee:
+    def __init__(self, employee_id, name, salary):
+        self.employee_id = employee_id
+        self.name = name
+        self.salary = salary
+
+    def update_details(self, name=None, salary=None):
+        if name:
+            self.name = name
+        if salary:
+            self.salary = salary
+
+    def __str__(self):
+        return f"ID: {self.employee_id}, Name: {self.name}, Salary: {self.salary}"
+
+class EmployeeManagementSystem:
+    def __init__(self):
+        self.employees = {}
+
+    def create_employee(self):
+        employee_id = input("Enter employee ID: ")
+        name = input("Enter employee name: ")
+        salary = float(input("Enter employee salary: "))
+        
+        if employee_id in self.employees:
+            print(f"Employee with ID {employee_id} already exists!")
+        else:
+            new_employee = Employee(employee_id, name, salary)
+            self.employees[employee_id] = new_employee
+            print(f"Employee {name} added successfully!")
+
+    def read_employee(self):
+        employee_id = input("Enter employee ID to view details: ")
+        employee = self.employees.get(employee_id)
+        
+        if employee:
+            print(employee)
+        else:
+            print("Employee not found!")
+
+    def update_employee(self):
+        employee_id = input("Enter employee ID to update: ")
+        employee = self.employees.get(employee_id)
+        
+        if employee:
+            new_name = input(f"Enter new name for {employee.name} (leave blank to keep it unchanged): ")
+            new_salary = input(f"Enter new salary for {employee.name} (leave blank to keep it unchanged): ")
+            
+            # Update only if new details are provided
+            new_name = new_name if new_name else None
+            new_salary = float(new_salary) if new_salary else None
+
+            employee.update_details(new_name, new_salary)
+            print(f"Employee {employee.name} updated successfully!")
+        else:
+            print("Employee not found!")
+
+    def delete_employee(self):
+        employee_id = input("Enter employee ID to delete: ")
+        
+        if employee_id in self.employees:
+            del self.employees[employee_id]
+            print(f"Employee with ID {employee_id} deleted successfully!")
+        else:
+            print("Employee not found!")
+
+    def display_all_employees(self):
+        if self.employees:
+            print("\nEmployee List:")
+            for employee in self.employees.values():
+                print(employee)
+        else:
+            print("No employees to display.")
+
+    def menu(self):
+        while True:
+            print("\nEmployee Management System")
+            print("1. Add Employee")
+            print("2. View Employee")
+            print("3. Update Employee")
+            print("4. Delete Employee")
+            print("5. Display All Employees")
+            print("6. Exit")
+            choice = input("Enter your choice: ")
+            
+            if choice == '1':
+                self.create_employee()
+            elif choice == '2':
+                self.read_employee()
+            elif choice == '3':
+                self.update_employee()
+            elif choice == '4':
+                self.delete_employee()
+            elif choice == '5':
+                self.display_all_employees()
+            elif choice == '6':
+                print("Exiting system...")
+                break
+            else:
+                print("Invalid choice, please try again.")
+
+# Running the Employee Management System
+if __name__ == "__main__":
+    system = EmployeeManagementSystem()
+    system.menu()
